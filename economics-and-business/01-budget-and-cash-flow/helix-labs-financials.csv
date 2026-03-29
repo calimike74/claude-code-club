@@ -1,0 +1,33 @@
+category,type,item,jan_2026,feb_2026,mar_2026,notes
+Revenue,income,SaaS Subscriptions (SME),18500,19200,20100,"42 active clients at avg ~£475/month, growing 3-4% monthly"
+Revenue,income,SaaS Subscriptions (Enterprise),8500,8500,8500,"2 enterprise clients at £4,250/month each, fixed contracts"
+Revenue,income,Onboarding Fees,2000,0,3500,"One-off setup fees for new clients, irregular"
+Revenue,income,Support Add-ons,1200,1350,1400,"Premium support tier, ~15% of SME clients"
+,,,,,,
+Costs,fixed,Office Rent (WeWork Manchester),4200,4200,4200,"12-month contract, no break clause"
+Costs,fixed,Salaries - Engineering (4 staff),22000,22000,22000,"Senior dev £65k, 3 devs avg £45k, includes NI/pension"
+Costs,fixed,Salaries - Sales (2 staff),9500,9500,9500,"Sales lead £42k + commission, SDR £28k + commission"
+Costs,fixed,Salaries - Operations (2 staff),7800,7800,7800,"CFO (part-time contractor £4.2k), Office manager £3.6k"
+Costs,fixed,Salaries - You (FP&A Analyst),2400,2400,2400,"Your salary: £28,800/year"
+Costs,fixed,Software Licences,1850,1850,1850,"AWS hosting £800, Slack £180, HubSpot £520, misc £350"
+Costs,fixed,Insurance,380,380,380,"Professional indemnity + public liability"
+Costs,variable,Sales Commission,1400,1100,1650,"8% of new revenue brought in by sales team"
+Costs,variable,Marketing - Digital Ads,3200,3800,2900,"Google Ads + LinkedIn, fluctuates with campaigns"
+Costs,variable,Marketing - Events/Content,800,0,1500,"Construction industry trade shows, content production"
+Costs,variable,Server Scaling Costs,420,440,480,"AWS usage-based, grows with client base"
+Costs,variable,Travel & Client Visits,650,380,820,"Sales team travel to client sites"
+Costs,variable,Legal & Accounting,0,1200,0,"Quarterly accountant review in Feb"
+Costs,variable,Recruitment,0,0,2500,"Recruiter fee for incoming junior developer"
+,,,,,,
+Assets,balance,Cash in Bank (opening),82000,58500,36285,"Starting cash from seed round (Aug 2025: £150k)"
+Assets,balance,Accounts Receivable,6200,7800,5400,"Outstanding invoices, ~30 day payment terms"
+Assets,balance,Monthly Burn Rate,,,,"Calculate from the data above"
+,,,,,,
+Context,info,Founded,"August 2025",,,"Seed round: £150k from angel investors"
+Context,info,Employees,"11 (including you)",,,"Founder/CEO not taking salary, has separate income"
+Context,info,Product,"CloudBuild - project management for construction SMEs",,
+Context,info,Market,"UK construction sector, 350k+ SMEs",,,"TAM estimated at £85M for construction project mgmt software"
+Context,info,Biggest Client,"Hargreaves Construction - £4,250/month enterprise",,,""
+Context,info,Pipeline,"2 enterprise prospects in late-stage discussions",,,"If won: +£8,500/month from ~month 5-6"
+Context,info,Churn,"Lost 3 SME clients in Q1 (price sensitivity)",,,"Monthly churn ~2.5%, slightly above target of 2%"
+Context,info,Competitor,"PlanGrid (US, bigger), Procore (US, enterprise-focused)",,,"Helix is cheaper and UK-focused"

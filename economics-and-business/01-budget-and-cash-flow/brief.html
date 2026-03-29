@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1 — Budget & Cash Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a26;
+    --border: #2a2a3a;
+    --border-accent: #3d5afe;
+    --text-primary: #e8e8f0;
+    --text-secondary: #8888a0;
+    --text-muted: #55556a;
+    --accent: #3d5afe;
+    --accent-glow: rgba(61, 90, 254, 0.3);
+    --accent-subtle: rgba(61, 90, 254, 0.08);
+    --warn: #ff6b35;
+    --success: #00c853;
+    --gold: #ffd740;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(61, 90, 254, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61, 90, 254, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  .classification {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--border-accent);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    background: var(--accent-subtle);
+  }
+
+  .classification::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .module-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 3px;
+  }
+
+  h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+
+  h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ===== ROLE CARD ===== */
+  .role-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.2s;
+  }
+
+  .role-card:hover {
+    border-color: var(--border-accent);
+    background: var(--bg-card-hover);
+  }
+
+  .role-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .role-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .role-company {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+
+  .role-description {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ===== SCENARIO ===== */
+  .scenario {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.4s;
+  }
+
+  .scenario-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--warn);
+    margin-bottom: 16px;
+  }
+
+  .scenario p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  .scenario p:last-child {
+    margin-bottom: 0;
+  }
+
+  .scenario strong {
+    color: var(--text-primary);
+  }
+
+  /* ===== DELIVERABLES ===== */
+  .deliverables {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.6s;
+  }
+
+  .deliverables-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--success);
+    margin-bottom: 20px;
+  }
+
+  .deliverable-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .deliverable-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .deliverable-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+
+  .deliverable-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .deliverable-text strong {
+    color: var(--text-primary);
+  }
+
+  /* ===== DATA PACK ===== */
+  .data-pack {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.8s;
+  }
+
+  .data-pack-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 215, 64, 0.04);
+    border: 1px solid rgba(255, 215, 64, 0.1);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  .file-icon {
+    color: var(--gold);
+  }
+
+  .file-name {
+    color: var(--text-primary);
+  }
+
+  .file-desc {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-left: auto;
+  }
+
+  /* ===== SKILLS ===== */
+  .skills {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 1.0s;
+  }
+
+  .skills-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .skill-tag {
+    padding: 10px 16px;
+    background: var(--accent-subtle);
+    border: 1px solid rgba(61, 90, 254, 0.15);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* ===== SPEC LINK ===== */
+  .spec-link {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 1.2s;
+  }
+
+  .spec-link-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .spec-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .spec-tag {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 1.4s;
+  }
+
+  .footer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .start-btn {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 14px 40px;
+    background: var(--accent);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--accent-glow);
+  }
+
+  /* ===== REAL WORLD ===== */
+  .real-world {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay: 0.5s;
+  }
+
+  .real-world-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--warn);
+    margin-bottom: 16px;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .stat-card {
+    padding: 20px;
+    background: rgba(255, 107, 53, 0.04);
+    border: 1px solid rgba(255, 107, 53, 0.1);
+    border-radius: 8px;
+  }
+
+  .stat-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @media (max-width: 600px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .skill-grid { grid-template-columns: 1fr; }
+    .container { padding: 24px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="classification">Level 1 &mdash; Baseline</div>
+    <div class="module-number">MODULE 01</div>
+    <h1>Budget &amp; <em>Cash Flow</em></h1>
+    <p class="subtitle">Build a 12-month cash flow forecast for a growing UK startup. The same task a junior FP&amp;A analyst does every month &mdash; except they take a day and you'll do it in 30 minutes.</p>
+  </div>
+
+  <!-- YOUR ROLE -->
+  <div class="role-card">
+    <div class="role-label">Your Role</div>
+    <div class="role-title">Junior Financial Planning &amp; Analysis Analyst</div>
+    <div class="role-company">Helix Labs &mdash; a 30-person UK SaaS startup based in Manchester</div>
+    <p class="role-description">You joined Helix Labs two weeks ago. The company sells project management software to small construction firms. Revenue is growing but cash is tight &mdash; they're burning through reserves faster than new subscriptions come in. The CFO, Sarah Chen, needs clarity on whether the company can survive the next 12 months without raising more money.</p>
+  </div>
+
+  <!-- THE BRIEF -->
+  <div class="scenario">
+    <div class="scenario-label">The Brief &mdash; From Sarah Chen, CFO</div>
+    <p>I need a <strong>12-month cash flow forecast</strong> on my desk by end of day. The board meets Thursday and they'll want to see three scenarios: <strong>base case</strong> (current trajectory), <strong>optimistic</strong> (we land two enterprise deals in Q2), and <strong>pessimistic</strong> (we lose our biggest client in month 4).</p>
+    <p>I've attached last quarter's actuals and our current expense breakdown. The numbers are real &mdash; don't smooth them out. If we're going to run out of cash, I need to know <strong>which month</strong> and <strong>how much runway we have left</strong>.</p>
+    <p>One more thing: the board will ask about <strong>break-even</strong>. When do we stop burning cash? Give me a clear answer with the assumptions behind it.</p>
+  </div>
+
+  <!-- WHY THIS MATTERS -->
+  <div class="real-world">
+    <div class="real-world-label">Why This Matters &mdash; The Real World</div>
+    <p class="role-description">This is one of the first tasks a junior finance hire does at any company. Before AI, it took a graduate analyst a full day to build a cash flow model in Excel. JPMorgan's internal AI tool now does the first draft in under 2 minutes. PwC cut graduate hiring by 32% partly because AI handles this kind of work. The analysts who survived the cut aren't the ones who can build spreadsheets &mdash; they're the ones who can <strong>interrogate the model, challenge the assumptions, and explain what the numbers mean</strong>.</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">32%</div>
+        <div class="stat-label">PwC graduate hiring cut by 2028</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">29%</div>
+        <div class="stat-label">KPMG UK graduate intake already down</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2 min</div>
+        <div class="stat-label">JPMorgan AI builds first-draft models</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">77%</div>
+        <div class="stat-label">of businesses using AI for full task automation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELIVERABLES -->
+  <div class="deliverables">
+    <div class="deliverables-label">What You'll Deliver</div>
+    <div class="deliverable-item">
+      <span class="deliverable-number">01</span>
+      <div class="deliverable-text"><strong>12-month cash flow forecast</strong> with three scenarios (base, optimistic, pessimistic). Each scenario shows monthly cash in, cash out, and closing balance.</div>
+    </div>
+    <div class="deliverable-item">
+      <span class="deliverable-number">02</span>
+      <div class="deliverable-text"><strong>Break-even analysis</strong> &mdash; which month does Helix Labs stop burning cash in each scenario? What assumptions drive that date?</div>
+    </div>
+    <div class="deliverable-item">
+      <span class="deliverable-number">03</span>
+      <div class="deliverable-text"><strong>One-page executive summary</strong> for the board. Not the spreadsheet &mdash; a clear written briefing that a non-financial board member can understand in 60 seconds.</div>
+    </div>
+    <div class="deliverable-item">
+      <span class="deliverable-number">04</span>
+      <div class="deliverable-text"><strong>Your recommendation</strong> &mdash; does Helix Labs need to raise money, cut costs, or stay the course? Defend your answer.</div>
+    </div>
+  </div>
+
+  <!-- DATA PACK -->
+  <div class="data-pack">
+    <div class="data-pack-label">Your Data Pack</div>
+    <div class="file-item">
+      <span class="file-icon">&#x1F4CA;</span>
+      <span class="file-name">helix-labs-financials.csv</span>
+      <span class="file-desc">Last 3 months actuals + expense breakdown</span>
+    </div>
+    <div class="file-item">
+      <span class="file-icon">&#x1F4DD;</span>
+      <span class="file-name">prompts.md</span>
+      <span class="file-desc">Step-by-step prompts for Claude Code</span>
+    </div>
+    <div class="file-item">
+      <span class="file-icon">&#x1F3AF;</span>
+      <span class="file-name">challenge.md</span>
+      <span class="file-desc">Your mission brief and success criteria</span>
+    </div>
+  </div>
+
+  <!-- SKILLS YOU'LL BUILD -->
+  <div class="skills">
+    <div class="skills-label">AI Skills You'll Build</div>
+    <div class="skill-grid">
+      <div class="skill-tag">Briefing AI on a structured analysis task</div>
+      <div class="skill-tag">Working with financial data in Claude Code</div>
+      <div class="skill-tag">Scenario modelling (what-if analysis)</div>
+      <div class="skill-tag">Iterating on output quality</div>
+      <div class="skill-tag">Translating numbers into plain English</div>
+      <div class="skill-tag">Challenging AI assumptions</div>
+    </div>
+  </div>
+
+  <!-- A-LEVEL SPEC LINKS -->
+  <div class="spec-link">
+    <div class="spec-link-label">A-Level Spec Links</div>
+    <div class="spec-items">
+      <span class="spec-tag">Business: Cash flow forecasting</span>
+      <span class="spec-tag">Business: Break-even analysis</span>
+      <span class="spec-tag">Business: Sources of finance</span>
+      <span class="spec-tag">Business: Financial planning</span>
+      <span class="spec-tag">Economics: Costs and revenue</span>
+      <span class="spec-tag">Economics: Business objectives</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="footer-text">Time estimate: 30&ndash;45 minutes</p>
+    <a href="prompts.md" class="start-btn">Open Prompt Card &rarr;</a>
+  </div>
+
+</div>
+</body>
+</html>
